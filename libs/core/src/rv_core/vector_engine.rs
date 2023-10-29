@@ -12,8 +12,7 @@ pub use vlen::Vlen;
 
 use super::snapshot::Snapshotable;
 
-#[derive(Builder, Clone, Copy, Default, PartialEq)]
-#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Builder, Clone, Copy, Default, PartialEq, Debug)]
 #[builder(build_fn(skip))]
 pub struct VectorEngine {
     pub lmul: Lmul,

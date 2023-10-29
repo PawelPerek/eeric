@@ -2,8 +2,7 @@ use crate::{prelude::Snapshotable, rv_core::memory::Memory};
 
 use super::aliases::integer::SP;
 
-#[derive(Clone, PartialEq)]
-#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Clone, PartialEq, Debug)]
 pub struct IntegerRegisters([u64; 31]);
 
 impl IntegerRegisters {

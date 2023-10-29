@@ -438,7 +438,7 @@ dependencies = [
 
 [[package]]
 name = "eeric-core"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "derive_builder",
  "itertools 0.11.0",
@@ -447,14 +447,14 @@ dependencies = [
 
 [[package]]
 name = "eeric-interpreter"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "eeric-core",
 ]
 
 [[package]]
 name = "eeric-webapp"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "eeric-core",
  "eeric-interpreter",

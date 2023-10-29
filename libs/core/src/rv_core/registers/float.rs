@@ -1,7 +1,6 @@
 use crate::prelude::Snapshotable;
 
-#[derive(Clone, Default, PartialEq)]
-#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Clone, Default, PartialEq, Debug)]
 pub struct FloatRegisters([f64; 32]);
 
 impl Snapshotable for FloatRegisters {

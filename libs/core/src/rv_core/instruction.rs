@@ -5,8 +5,7 @@ use format::*;
 
 use super::vector_engine::sew::BaseSew;
 
-#[derive(Clone, PartialEq)]
-#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Clone, PartialEq, Debug)]
 pub enum Instruction {
     /// Base instructions
     // Arithmetic Operations

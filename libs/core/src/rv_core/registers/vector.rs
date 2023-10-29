@@ -5,8 +5,7 @@ use crate::prelude::*;
 pub use vreg::Vreg;
 pub use wide_vreg::WideVreg;
 
-#[derive(Clone, Default, PartialEq)]
-#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Clone, Default, PartialEq, Debug)]
 pub struct VectorRegisters(pub Vec<u8>);
 
 impl Snapshotable for VectorRegisters {

@@ -5,8 +5,7 @@ pub trait Sew {
     }
 }
 
-#[derive(Clone, Copy, Default, PartialEq)]
-#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Clone, Copy, Default, PartialEq, Debug)]
 pub enum BaseSew {
     #[default]
     E8,
@@ -118,8 +117,7 @@ impl Sew for BaseSew {
     }
 }
 
-#[derive(Clone, Copy, PartialEq)]
-#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Clone, Copy, PartialEq, Debug)]
 pub enum DoubleSew {
     E16,
     E32,
@@ -154,8 +152,7 @@ impl Sew for DoubleSew {
     }
 }
 
-#[derive(Clone, Copy, PartialEq)]
-#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Clone, Copy, PartialEq, Debug)]
 pub enum HalfSew {
     E8,
     E16,
@@ -172,8 +169,7 @@ impl Sew for HalfSew {
     }
 }
 
-#[derive(Clone, Copy, PartialEq)]
-#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Clone, Copy, PartialEq, Debug)]
 pub enum FourthSew {
     E8,
     E16,
@@ -188,8 +184,7 @@ impl Sew for FourthSew {
     }
 }
 
-#[derive(Clone, Copy, PartialEq)]
-#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Clone, Copy, PartialEq, Debug)]
 pub enum EighthSew {
     E8,
 }
@@ -202,8 +197,7 @@ impl Sew for EighthSew {
     }
 }
 
-#[derive(Clone, Copy, PartialEq)]
-#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Clone, Copy, PartialEq, Debug)]
 pub enum FpSew {
     E32,
     E64,
@@ -218,8 +212,7 @@ impl Sew for FpSew {
     }
 }
 
-#[derive(Clone, Copy, PartialEq)]
-#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Clone, Copy, PartialEq, Debug)]
 pub enum DoubleFpSew {
     E64,
 }

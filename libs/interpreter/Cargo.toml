@@ -7,4 +7,4 @@ license = { workspace = true }
 repository = { workspace = true }
 
 [dependencies]
-eeric-core = { path = "../core" , version = "0.1.0"}
+eeric-core = { path = "../core" , version = "0.1.1"}

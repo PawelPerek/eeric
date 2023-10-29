@@ -13,8 +13,7 @@ use registers::Registers;
 
 use self::vector_engine::VectorEngine;
 
-#[derive(Builder, Clone, PartialEq)]
-#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Builder, Clone, PartialEq, Debug)]
 #[builder(build_fn(skip))]
 pub struct RvCore {
     pub memory: Memory,

@@ -2,15 +2,13 @@ use crate::{prelude::Snapshotable, rv_core::vector_engine::Vlen};
 
 use super::aliases::csr::VLENB;
 
-#[derive(Clone, PartialEq)]
-#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Clone, PartialEq, Debug)]
 pub enum CsrPrivilege {
     ReadOnly,
     ReadWrite,
 }
 
-#[derive(Clone, PartialEq)]
-#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Clone, PartialEq, Debug)]
 pub struct CsrRegister {
     value: u64,
     pub privilege: CsrPrivilege,
@@ -38,8 +36,7 @@ impl CsrRegister {
     }
 }
 
-#[derive(Clone, PartialEq)]
-#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Clone, PartialEq, Debug)]
 pub struct CsrRegisters([CsrRegister; 4096]);
 
 impl Snapshotable for CsrRegisters {

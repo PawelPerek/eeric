@@ -2,8 +2,7 @@ use std::collections::VecDeque;
 
 use super::snapshot::Snapshotable;
 
-#[derive(Clone, PartialEq)]
-#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Clone, PartialEq, Debug)]
 pub struct Memory {
     raw: VecDeque<u8>,
     data_ptr: usize,

@@ -119,7 +119,6 @@ fn StartButton(
                 match compile_result {
                     Err(vec) => errors.set(global_state::Errors(vec.into_iter().collect())),
                     Ok(result) => {
-                        // log!("{:?}", result.instructions);
                         build_machine((result.instructions, result.memory));
                         let map = result.instructions_addresses;
                         if let Some(first) = map.first() {

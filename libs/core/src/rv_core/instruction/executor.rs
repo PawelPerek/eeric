@@ -912,17 +912,17 @@ mod tests {
                 rd: 10,
                 rs1: 0,
                 imm12: 400,
-            }), // dest
+            }),
             Addi(I {
                 rd: 11,
                 rs1: 0,
                 imm12: 0,
-            }), // src
+            }),
             Addi(I {
                 rd: 12,
                 rs1: 0,
                 imm12: 128,
-            }), // n
+            }),
             Addi(I {
                 rd: 13,
                 rs1: 10,
