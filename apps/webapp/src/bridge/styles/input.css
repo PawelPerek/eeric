@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.highlighted-line {
+	background: rgba(250, 250, 210, 0.2);
+}

@@ -1,0 +1,10 @@
+[package]
+name = "eeric-interpreter"
+description = "A front-end abstraction layer over eeric"
+edition = { workspace = true }
+version = { workspace = true }
+license = { workspace = true }
+repository = { workspace = true }
+
+[dependencies]
+eeric-core = { path = "../core"}

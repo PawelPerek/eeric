@@ -1,0 +1,25 @@
+pub mod fadd;
+pub mod fclass;
+pub mod fcvt;
+pub mod fdiv;
+pub mod feq;
+mod fld;
+pub mod fle;
+pub mod flt;
+pub mod fmadd;
+pub mod fmax;
+pub mod fmin;
+pub mod fmsub;
+pub mod fmul;
+pub mod fmv;
+pub mod fnmadd;
+pub mod fnmsub;
+mod fsd;
+pub mod fsgnj;
+pub mod fsgnjn;
+pub mod fsgnjx;
+pub mod fsqrt;
+pub mod fsub;
+
+pub use fld::fld;
+pub use fsd::fsd;

@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "module": "NodeNext",
+    "target": "es5",
+    "moduleResolution": "NodeNext",
+    "allowJs": true
+  },
+  "files": ["src/bridge/index.ts"]
+}

@@ -1,0 +1,65 @@
+name: Rust
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+
+    - name: Install npm dependencies
+      run: npm ci
+
+    - name: Setup nightly toolchain
+      uses: actions-rs/toolchain@v1.0.7
+      with:
+        toolchain: nightly
+        target: wasm32-unknown-unknown
+        override: true
+    
+    - uses: jetli/trunk-action@v0.4.0
+      with:
+        version: 'latest'
+    
+    - name: Run tests
+      run: cargo test --verbose
+
+    - name: Compile TypeScript bridge
+      run: npm run build:ts:release
+
+    - name: Compile Rust codebase
+      run: npm run build:rs:public
+
+    - name: Setup Pages
+      uses: actions/configure-pages@v3
+    
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v2
+      with:
+        path: './dist/final'
+    
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v2
+    
+    
