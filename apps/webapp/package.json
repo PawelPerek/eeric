@@ -5,7 +5,7 @@
     
     "build:rs": "trunk build",
     "build:rs:release": "trunk build --release",
-    "build:rs:public": "trunk build --release --public-url /vector-exchange",
+    "build:rs:public": "trunk build --release --public-url /eeric",
     "build:rs:watch": "trunk serve",
     "build:rs:watch:release": "trunk serve --release",
 
@@ -30,6 +30,6 @@
     "webpack-dev-server": "^4.15.1"
   },
   "version": "0.0.1",
-  "description": "Vector exchange bridge bindgen",
-  "name": "vector-exchange-bindgen"
+  "description": "eeric webapp bridge bindgen",
+  "name": "eeric-webapp-bindgen"
 }
