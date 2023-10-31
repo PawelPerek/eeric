@@ -3,8 +3,8 @@ use leptos::*;
 use super::RegisterRoute;
 
 #[component]
-pub fn RegistersHeader(cx: Scope, active_route: RwSignal<RegisterRoute>) -> impl IntoView {
-    view! { cx,
+pub fn RegistersHeader(active_route: RwSignal<RegisterRoute>) -> impl IntoView {
+    view! {
         <div
             style="grid-template-columns: 1fr 3fr 1fr"
             class="w-full h-20 grid items-center bg-gray-400 divide-x"
@@ -23,8 +23,8 @@ pub fn RegistersHeader(cx: Scope, active_route: RwSignal<RegisterRoute>) -> impl
 }
 
 #[component]
-fn Button(cx: Scope, route: RegisterRoute, active_route: RwSignal<RegisterRoute>) -> impl IntoView {
-    view! { cx,
+fn Button(route: RegisterRoute, active_route: RwSignal<RegisterRoute>) -> impl IntoView {
+    view! {
         <button
             class="rounded-md px-3.5 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-200 hover:text-bold"
             class=("bg-gray-200", move || active_route() == route)

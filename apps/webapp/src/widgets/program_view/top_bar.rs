@@ -5,17 +5,17 @@ use crate::widgets::global_state;
 use super::Example;
 
 #[component]
-pub fn TopBar(cx: Scope, example: RwSignal<Example>) -> impl IntoView {
-    let core = expect_context::<RwSignal<global_state::Machine>>(cx);
-    let is_started = create_read_slice(cx, core, |state| state.is_on());
+pub fn TopBar(example: RwSignal<Example>) -> impl IntoView {
+    let core = expect_context::<RwSignal<global_state::Machine>>();
+    let is_started = create_read_slice(core, |state| state.is_on());
 
-    let (menu_opened, set_menu_opened) = create_signal(cx, false);
+    let (menu_opened, set_menu_opened) = create_signal(false);
 
     window_event_listener(ev::click, move |_| {
         set_menu_opened(false);
     });
 
-    view! { cx,
+    view! {
         <div class="w-full p-4 flex items-center justify-between bg-zinc-800">
             <div class="relative inline-block text-left">
                 <div>
@@ -74,12 +74,10 @@ pub fn TopBar(cx: Scope, example: RwSignal<Example>) -> impl IntoView {
 
 #[component]
 pub fn ExampleSelector(
-    cx: Scope,
     example: Example,
     set_example: WriteSignal<Example>,
 ) -> impl IntoView {
     view! {
-        cx,
         <a
             href="#"
             class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900"
@@ -87,8 +85,7 @@ pub fn ExampleSelector(
             tabindex="-1"
             id="menu-item-0"
             on:click=move |_| {
-                log!("{}", example.to_string());
-                set_example(example)
+                set_example(example);
             }>
                 {example.to_string()}
         </a>

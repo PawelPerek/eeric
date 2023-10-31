@@ -10,8 +10,8 @@ use integer_registers::IntegerRegisters;
 use pc_register::PcRegister;
 
 #[component]
-pub fn ScalarView(cx: Scope) -> impl IntoView {
-    view! { cx,
+pub fn ScalarView() -> impl IntoView {
+    view! {
         <>
             <PcRegister/>
             <IntegerRegisters/>

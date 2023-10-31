@@ -6,16 +6,16 @@ use crate::widgets::global_state;
 use super::scalar_register::ScalarRegister;
 
 #[component]
-pub fn FloatRegisters(cx: Scope) -> impl IntoView {
-    let core = expect_context::<RwSignal<global_state::Machine>>(cx);
-    let fregs = create_read_slice(cx, core, |state| {
+pub fn FloatRegisters() -> impl IntoView {
+    let core = expect_context::<RwSignal<global_state::Machine>>();
+    let fregs = create_read_slice(core, |state| {
         state
             .read_core()
             .map(|machine| machine.registers.snapshot().f)
             .unwrap_or_default()
     });
 
-    view! { cx,
+    view! {
         <div class="text-center bg-white rounded p-4 shadow-xl">
             <h1 class="font-bold text-center border border-gray-200 p-6">Float registers</h1>
             <div class="grid grid-cols-8 justify-items-center">
@@ -24,7 +24,7 @@ pub fn FloatRegisters(cx: Scope) -> impl IntoView {
                         .into_iter()
                         .enumerate()
                         .map(|(index, value)| {
-                            view! { cx,
+                            view! {
                                 <ScalarRegister name=freg_name(index) value=format!("{:.2}", value)/>
                             }
                         })

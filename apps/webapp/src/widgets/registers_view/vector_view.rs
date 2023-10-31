@@ -10,8 +10,8 @@ use vector_config::VectorConfig;
 use vector_registers::VectorRegisters;
 
 #[component]
-pub fn VectorView(cx: Scope) -> impl IntoView {
-    view! { cx,
+pub fn VectorView() -> impl IntoView {
+    view! {
         <>
             <VectorConfig/>
             <VectorRegisters/>

@@ -6,32 +6,27 @@ use editor::Editor;
 use eeric_core::prelude::*;
 use eeric_interpreter::prelude::*;
 use examples_repo::get_example;
-use leptos::{leptos_dom::log, *};
+use leptos::*;
 use top_bar::TopBar;
 
 use crate::widgets::global_state;
 
 #[component]
-pub fn ProgramView(cx: Scope) -> impl IntoView {
-    let core = expect_context::<RwSignal<global_state::Machine>>(cx);
-    let core_exists = create_read_slice(cx, core, |machine| machine.is_on());
+pub fn ProgramView() -> impl IntoView {
+    let core = expect_context::<RwSignal<global_state::Machine>>();
+    let core_exists = create_read_slice(core, |machine| machine.is_on());
 
-    let example = create_rw_signal(cx, Example::Memcpy);
+    let example = create_rw_signal(Example::Memcpy);
 
-    let code = create_rw_signal(cx, "".to_owned());
-    let (instruction_map, set_instruction_map) = create_signal(cx, vec![]);
+    let code = create_rw_signal("".to_owned());
+    let (instruction_map, set_instruction_map) = create_signal(vec![]);
 
-    create_effect(cx, move |_| {
+    create_effect(move |_| {
         let example = get_example(example()).to_owned();
         code.set(example);
     });
 
-    create_effect(cx, move |_| {
-        // Without this log of Signal<Code> it doesn't refresh in editor, hmm...
-        log!("{:?}", code());
-    });
-
-    view! { cx,
+    view! {
         <div
             style="grid-area: pro"
             class="flex flex-col justify-center items-center content-center"
@@ -43,9 +38,9 @@ pub fn ProgramView(cx: Scope) -> impl IntoView {
 
                 {move || {
                     if core_exists() {
-                        view! { cx, <StepButton instruction_map=instruction_map/> }
+                        view! { <StepButton instruction_map=instruction_map/> }
                     } else {
-                        view! { cx,
+                        view! { 
                             <StartButton
                                 code=code.read_only()
                                 set_instruction_map=set_instruction_map
@@ -60,11 +55,10 @@ pub fn ProgramView(cx: Scope) -> impl IntoView {
 }
 
 #[component]
-fn ResetButton(cx: Scope) -> impl IntoView {
-    let core = expect_context::<RwSignal<global_state::Machine>>(cx);
-    let highlighted_line = expect_context::<RwSignal<global_state::Highlight>>(cx);
+fn ResetButton() -> impl IntoView {
+    let core = expect_context::<RwSignal<global_state::Machine>>();
+    let highlighted_line = expect_context::<RwSignal<global_state::Highlight>>();
     let (is_started, reset) = create_slice(
-        cx,
         core,
         |state| state.is_on(),
         move |state, _: ()| {
@@ -73,7 +67,7 @@ fn ResetButton(cx: Scope) -> impl IntoView {
         },
     );
 
-    view! { cx,
+    view! {
         <button
             prop:disabled=move || !is_started()
             class="rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm"
@@ -90,16 +84,15 @@ fn ResetButton(cx: Scope) -> impl IntoView {
 
 #[component]
 fn StartButton(
-    cx: Scope,
     code: ReadSignal<String>,
     set_instruction_map: WriteSignal<Vec<usize>>,
 ) -> impl IntoView {
-    let core = expect_context::<RwSignal<global_state::Machine>>(cx);
-    let vlen = expect_context::<RwSignal<Vlen>>(cx);
-    let highlighted_line = expect_context::<RwSignal<global_state::Highlight>>(cx);
-    let errors = expect_context::<RwSignal<global_state::Errors>>(cx);
+    let core = expect_context::<RwSignal<global_state::Machine>>();
+    let vlen = expect_context::<RwSignal<Vlen>>();
+    let highlighted_line = expect_context::<RwSignal<global_state::Highlight>>();
+    let errors = expect_context::<RwSignal<global_state::Errors>>();
 
-    let build_machine = create_write_slice(cx, core, move |machine, (instructions, memory)| {
+    let build_machine = create_write_slice(core, move |machine, (instructions, memory)| {
         let vu = VectorEngineBuilder::default().vlen(vlen()).build();
 
         let core = RvCoreBuilder::default()
@@ -111,7 +104,7 @@ fn StartButton(
         *machine = global_state::Machine::On(core);
     });
 
-    view! { cx,
+    view! {
         <button
             class="rounded-md bg-white/10 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-white/20"
             on:click=move |_| {
@@ -136,13 +129,13 @@ fn StartButton(
 }
 
 #[component]
-fn StepButton(cx: Scope, instruction_map: ReadSignal<Vec<usize>>) -> impl IntoView {
-    let core = expect_context::<RwSignal<global_state::Machine>>(cx);
-    let highlighted_line = expect_context::<RwSignal<global_state::Highlight>>(cx);
-    let errors = expect_context::<RwSignal<global_state::Errors>>(cx);
-    let (last_executed_line, set_last_executed_line) = create_signal(cx, 0);
+fn StepButton(instruction_map: ReadSignal<Vec<usize>>) -> impl IntoView {
+    let core = expect_context::<RwSignal<global_state::Machine>>();
+    let highlighted_line = expect_context::<RwSignal<global_state::Highlight>>();
+    let errors = expect_context::<RwSignal<global_state::Errors>>();
+    let (last_executed_line, set_last_executed_line) = create_signal(0);
 
-    let machine_step = create_write_slice(cx, core, move |machine, _: ()| {
+    let machine_step = create_write_slice( core, move |machine, _: ()| {
         let option = machine.rw_core().unwrap().step();
 
         let mut did_finish = false;
@@ -183,7 +176,7 @@ fn StepButton(cx: Scope, instruction_map: ReadSignal<Vec<usize>>) -> impl IntoVi
         }
     });
 
-    view! { cx,
+    view! {
         <button
             class="rounded-md bg-green-700 px-3 text-sm font-semibold text-white shadow-sm hover:bg-green-600"
             on:click=move |_| machine_step(())

@@ -72,13 +72,13 @@ pub mod global_state {
 }
 
 #[component]
-pub fn App(cx: Scope) -> impl IntoView {
-    provide_context(cx, create_rw_signal(cx, global_state::Machine::Off));
-    provide_context(cx, create_rw_signal(cx, Vlen::V128));
-    provide_context(cx, create_rw_signal(cx, global_state::Highlight::Off));
-    provide_context(cx, create_rw_signal(cx, global_state::Errors(Vec::new())));
+pub fn App() -> impl IntoView {
+    provide_context(create_rw_signal(global_state::Machine::Off));
+    provide_context(create_rw_signal(Vlen::V128));
+    provide_context(create_rw_signal(global_state::Highlight::Off));
+    provide_context(create_rw_signal(global_state::Errors(Vec::new())));
 
-    view! { cx,
+    view! {
         <div
             style=r#"
             grid-template:

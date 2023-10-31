@@ -29,17 +29,16 @@ extern "C" {
 }
 
 #[component]
-pub fn Editor(cx: Scope, code: RwSignal<String>) -> impl IntoView {
+pub fn Editor(code: RwSignal<String>) -> impl IntoView {
     // Create
 
-    let editor_parent = view! { cx, <div class="h-full w-full"></div> };
+    let editor_parent = view! { <div class="h-full w-full"></div> };
 
     create_monaco(&editor_parent);
 
     // Listen to code change
 
-    create_effect(cx, move |_| {
-        log!("{}", code());
+    create_effect(move |_| {
         set_input(code());
     });
 
@@ -53,9 +52,9 @@ pub fn Editor(cx: Scope, code: RwSignal<String>) -> impl IntoView {
 
     // Update writability after compilation
 
-    let core = expect_context::<RwSignal<global_state::Machine>>(cx);
+    let core = expect_context::<RwSignal<global_state::Machine>>();
 
-    create_effect(cx, move |_| {
+    create_effect(move |_| {
         use global_state::Machine;
 
         match core() {
@@ -66,9 +65,9 @@ pub fn Editor(cx: Scope, code: RwSignal<String>) -> impl IntoView {
 
     // Set highlighted line on step
 
-    let highlight = expect_context::<RwSignal<global_state::Highlight>>(cx);
+    let highlight = expect_context::<RwSignal<global_state::Highlight>>();
 
-    create_effect(cx, move |_| {
+    create_effect(move |_| {
         use global_state::Highlight;
 
         match highlight() {
@@ -79,9 +78,9 @@ pub fn Editor(cx: Scope, code: RwSignal<String>) -> impl IntoView {
 
     // Set error markers
 
-    let errors = expect_context::<RwSignal<global_state::Errors>>(cx);
+    let errors = expect_context::<RwSignal<global_state::Errors>>();
 
-    create_effect(cx, move |_| {
+    create_effect(move |_| {
         let (lines, error_messages): (Vec<usize>, Vec<String>) =
             errors.get().iter().cloned().unzip();
         let js_lines = lines.iter().cloned().map(JsValue::from).collect();

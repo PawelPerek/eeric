@@ -6,23 +6,23 @@ use crate::widgets::global_state;
 use super::{FrontEndSEW, SEWType};
 
 #[component]
-pub fn VectorRegisters(cx: Scope) -> impl IntoView {
-    let core = expect_context::<RwSignal<global_state::Machine>>(cx);
-    let vregs = create_read_slice(cx, core, |state| {
+pub fn VectorRegisters() -> impl IntoView {
+    let core = expect_context::<RwSignal<global_state::Machine>>();
+    let vregs = create_read_slice(core, |state| {
         state
             .read_core()
             .map(|machine| machine.registers.snapshot().v)
             .unwrap_or_default()
     });
 
-    let vec_engine = create_read_slice(cx, core, |state| {
+    let vec_engine = create_read_slice(core, |state| {
         state
             .read_core()
             .map(|machine| machine.vec_engine.snapshot())
             .unwrap_or_default()
     });
 
-    let selected_vlen = expect_context::<RwSignal<Vlen>>(cx);
+    let selected_vlen = expect_context::<RwSignal<Vlen>>();
 
     let vlen_view = move || {
         if vregs().is_empty() {
@@ -32,7 +32,7 @@ pub fn VectorRegisters(cx: Scope) -> impl IntoView {
         }
     };
 
-    let (sew, _set_sew) = create_signal(cx, FrontEndSEW::Default);
+    let (sew, _set_sew) = create_signal(FrontEndSEW::Default);
 
     let grid_cols = move || {
         (match vlen_view() {
@@ -42,12 +42,8 @@ pub fn VectorRegisters(cx: Scope) -> impl IntoView {
             Vlen::V64 => 2,
         }) * (vlen_view().byte_length() / sew().map_default(vec_engine().sew).0.byte_length() + 1)
     };
-
-    create_effect(cx, move |_| {
-        log!("{}", grid_cols());
-    });
-
-    view! { cx,
+    
+    view! {
         <div class="bg-white rounded p-4 shadow-xl max-h-[75%] overflow-y-scroll">
             <h1 class="font-bold text-center border border-gray-200 p-6">Vector registers</h1>
             <div
@@ -60,7 +56,7 @@ pub fn VectorRegisters(cx: Scope) -> impl IntoView {
                             .take(32)
                             .enumerate()
                             .map(|(index, _)| {
-                                view! { cx,
+                                view! {
                                     <>
                                         <SingleRegister
                                             index=index
@@ -78,7 +74,7 @@ pub fn VectorRegisters(cx: Scope) -> impl IntoView {
                             .enumerate()
                             .map(|(index, vreg)| {
 
-                                view! { cx,
+                                view! {
                                     <>
                                         <SingleRegister
                                             index=index
@@ -100,7 +96,6 @@ pub fn VectorRegisters(cx: Scope) -> impl IntoView {
 
 #[component]
 fn SingleRegister(
-    cx: Scope,
     index: usize,
     vreg: Vec<u8>,
     vlen: Vlen,
@@ -108,7 +103,7 @@ fn SingleRegister(
 ) -> impl IntoView {
     let has_large_content = vlen == Vlen::V512 && sew.0 == BaseSew::E8;
 
-    view! { cx,
+    view! {
         <>
             <div
                 class="text-center py-1 bg-gray-200"
@@ -122,7 +117,7 @@ fn SingleRegister(
                 vreg_view(&vreg, sew)
                     .into_iter()
                     .map(|vreg_value| {
-                        view! { cx,
+                        view! {
                             <div
                                 class="text-center p-1"
                                 class=("text-xs", move || has_large_content)

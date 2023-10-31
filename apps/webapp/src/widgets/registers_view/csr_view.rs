@@ -4,19 +4,19 @@ use leptos::*;
 use crate::widgets::global_state;
 
 #[component]
-pub fn CsrView(cx: Scope) -> impl IntoView {
-    let core = expect_context::<RwSignal<global_state::Machine>>(cx);
+pub fn CsrView() -> impl IntoView {
+    let core = expect_context::<RwSignal<global_state::Machine>>();
 
-    let (prompt, set_prompt) = create_signal(cx, "".to_owned());
+    let (prompt, set_prompt) = create_signal("".to_owned());
 
-    let regs = create_read_slice(cx, core, |state| {
+    let regs = create_read_slice(core, |state| {
         state
             .read_core()
             .map(|machine| machine.registers.snapshot())
             .unwrap_or_default()
     });
 
-    view! { cx,
+    view! {
         <>
             <input
                 type="text"
@@ -41,7 +41,7 @@ pub fn CsrView(cx: Scope) -> impl IntoView {
                             .filter(|(name, _)| { name.contains(&prompt()) })
                             .map(|(name, csr)| {
                                 let is_writable = csr.privilege == CsrPrivilege::ReadWrite;
-                                view! { cx,
+                                view! {
                                     <>
                                         <div class="px-2 text-center">{name}</div>
                                         <div class="px-2 text-center"

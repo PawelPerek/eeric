@@ -6,16 +6,16 @@ use crate::widgets::{global_state, registers_view::vector_view::SEWType};
 use super::{FrontEndLMUL, FrontEndSEW, FrontEndVLEN};
 
 #[component]
-pub fn VectorConfig(cx: Scope) -> impl IntoView {
-    let core = expect_context::<RwSignal<global_state::Machine>>(cx);
-    let vec_engine = create_read_slice(cx, core, |state| {
+pub fn VectorConfig() -> impl IntoView {
+    let core = expect_context::<RwSignal<global_state::Machine>>();
+    let vec_engine = create_read_slice(core, |state| {
         state
             .read_core()
             .map(|machine| machine.vec_engine.snapshot())
             .unwrap_or_default()
     });
 
-    view! { cx,
+    view! {
         <div
             style=r#"
             grid-template:
@@ -46,12 +46,12 @@ pub fn VectorConfig(cx: Scope) -> impl IntoView {
 }
 
 #[component]
-pub fn VlenSelector(cx: Scope, vlen: FrontEndVLEN) -> impl IntoView {
-    let selected_vlen = expect_context::<RwSignal<Vlen>>(cx);
-    let core = expect_context::<RwSignal<global_state::Machine>>(cx);
-    let is_started = create_read_slice(cx, core, |state| state.is_on());
+pub fn VlenSelector(vlen: FrontEndVLEN) -> impl IntoView {
+    let selected_vlen = expect_context::<RwSignal<Vlen>>();
+    let core = expect_context::<RwSignal<global_state::Machine>>();
+    let is_started = create_read_slice(core, |state| state.is_on());
 
-    view! { cx,
+    view! {
         <div
             class="px-4 py-2 select-none"
             class=("font-bold", move || FrontEndVLEN(selected_vlen()) == vlen)
