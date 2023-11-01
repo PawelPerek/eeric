@@ -1,34 +1,13 @@
+
 # eeric
+An Easily Embeddable RISC-V Core
 
-An Easily Embeddable RIsc-v Core
-
-# Design
-
-eeric is a RV64I core with support for Zicsr, M, F, D and V extensions. I designed it with following design goals in mind:
-
-- It's designed with WASM compilation in mind (although any cdylib target should work as well)
-- It doesn't support interrupts
-- It's single threaded, hence no A extension support
-- It's not designed to be most performant emulator, but it should be reasonably fast
-- It's meant to be an abstract back-end machine, so it needs a front-end compiler or interpreter to work (see https://github.com/PawelPerek/eeric-interpreter)
+# Overview
+eeric is a RV64I core supporting Zicsr, M, F, D, and V extensions, designed primarily for WASM compilation, although it works with any cdylib target. It acts as an abstract back-end machine requiring a front-end compiler or interpreter (see libs/eeric-interpreter).
 
 # Example
+The vectorized memcpy algorithm from RISCV Vector Spec examples is represented in `eeric_core` as shown below:
 
-Let's consider following RISC-V Vector Algorithm from [RISCV Vector Spec examples](https://github.com/riscv/riscv-v-spec):
-
-```
-loop:
-   vsetvli t0, a2, e8, m8, ta, ma   # Vectors of 8b
-   vle8.v v0, (a1)               # Load bytes
-     add a1, a1, t0              # Bump pointer
-     sub a2, a2, t0              # Decrement count
-   vse8.v v0, (a3)               # Store bytes
-     add a3, a3, t0              # Bump pointer
-     bnez a2, loop               # Any more?
-     ret
-```
-
-It can be expressed as following eeric core:
 ```rust
 use eeric_core::prelude::*;
 
@@ -87,7 +66,3 @@ fn main() {
     }
 }
 ```
-
-# Roadmap
-
-See https://github.com/PawelPerek/eeric/issues
