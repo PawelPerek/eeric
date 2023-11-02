@@ -4,5 +4,7 @@
 #![feature(array_chunks)]
 
 mod extensions;
-pub mod prelude;
 mod rv_core;
+
+pub mod macros;
+pub mod prelude;

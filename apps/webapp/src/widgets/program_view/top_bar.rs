@@ -5,7 +5,7 @@ use crate::widgets::global_state;
 use super::Example;
 
 #[component]
-pub fn TopBar(example: RwSignal<Example>) -> impl IntoView {
+pub fn TopBar(selected_example: RwSignal<Example>) -> impl IntoView {
     let core = expect_context::<RwSignal<global_state::Machine>>();
     let is_started = create_read_slice(core, |state| state.is_on());
 
@@ -56,27 +56,26 @@ pub fn TopBar(example: RwSignal<Example>) -> impl IntoView {
                     tabindex="-1"
                 >
                     <div class="py-1" role="none">
-                        <ExampleSelector example={Example::Memcpy} set_example={example.write_only()} />
-                        <ExampleSelector example={Example::Strcpy} set_example={example.write_only()} />
-                        <ExampleSelector example={Example::Strncpy} set_example={example.write_only()} />
-                        <ExampleSelector example={Example::Strlen} set_example={example.write_only()} />
-                        <ExampleSelector example={Example::Saxpy} set_example={example.write_only()} />
+                        <For
+                            each=move || Example::all_combinations()
+                            key=|example| example.name()
+                            children =move |example: Example| {
+                                view! { <ExampleSelector example=example set_example=selected_example.write_only() /> }
+                            }
+                        />
                     </div>
                 </div>
             </div>
 
             <div class="text-white">
-                Current example: {move || example().to_string()}
+                Current example: {move || selected_example().to_string()}
             </div>
         </div>
     }
 }
 
 #[component]
-pub fn ExampleSelector(
-    example: Example,
-    set_example: WriteSignal<Example>,
-) -> impl IntoView {
+pub fn ExampleSelector(example: Example, set_example: WriteSignal<Example>) -> impl IntoView {
     view! {
         <a
             href="#"

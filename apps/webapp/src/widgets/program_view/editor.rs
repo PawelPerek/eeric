@@ -1,13 +1,14 @@
 use js_sys::Array;
-use leptos::*;
+use leptos::{leptos_dom::logging::console_log, *};
 use wasm_bindgen::{prelude::*, JsValue};
+use web_sys::HtmlDivElement;
 
 use crate::widgets::global_state;
 
 #[wasm_bindgen]
 extern "C" {
     #[wasm_bindgen(js_namespace = monacoBridge, js_name = "create")]
-    fn create_monaco(parent: &JsValue);
+    fn create_monaco(parent: &HtmlDivElement);
 
     #[wasm_bindgen(js_namespace = monacoBridge, js_name = "onInput")]
     fn on_input(listener: &Closure<dyn Fn(String)>);
@@ -30,11 +31,15 @@ extern "C" {
 
 #[component]
 pub fn Editor(code: RwSignal<String>) -> impl IntoView {
-    // Create
+    let editor_ref = create_node_ref();
 
-    let editor_parent = view! { <div class="h-full w-full"></div> };
+    create_effect(move |_| {
+        let maybe_node = editor_ref.get();
 
-    create_monaco(&editor_parent);
+        if let Some(node) = maybe_node {
+            create_monaco(&node);
+        }
+    });
 
     // Listen to code change
 
@@ -89,5 +94,5 @@ pub fn Editor(code: RwSignal<String>) -> impl IntoView {
         set_errors(js_lines, js_errors);
     });
 
-    editor_parent
+    view! { <div node_ref=editor_ref class="h-full w-full"></div> }
 }

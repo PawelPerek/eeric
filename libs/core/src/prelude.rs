@@ -16,10 +16,3 @@ pub mod alias {
     pub use crate::rv_core::registers::aliases::integer::*;
     pub use crate::rv_core::registers::aliases::vector::*;
 }
-
-#[macro_export]
-macro_rules! fuse {
-    ($($instr:expr),+ $(,)? ) => {
-        Instruction::Fusion(vec![$($instr),+].into_boxed_slice())
-    };
-}

@@ -37,7 +37,7 @@ pub fn RegistersView() -> impl IntoView {
     use RegisterRoute as Route;
     let active_route = create_rw_signal(Route::ScalarRegisters);
 
-    view! { 
+    view! {
         <div style="grid-area: reg" class="flex flex-col items-center bg-gray-200">
             <RegistersHeader active_route=active_route/>
             <div class="grow w-full h-[calc(100%-5rem)] flex flex-col justify-evenly items-center">

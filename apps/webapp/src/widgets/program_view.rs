@@ -1,12 +1,12 @@
 mod editor;
-mod examples_repo;
+mod example;
 mod top_bar;
 
 use editor::Editor;
 use eeric_core::prelude::*;
 use eeric_interpreter::prelude::*;
-use examples_repo::get_example;
-use leptos::*;
+use example::Example;
+use leptos::{leptos_dom::logging::console_log, *};
 use top_bar::TopBar;
 
 use crate::widgets::global_state;
@@ -16,14 +16,15 @@ pub fn ProgramView() -> impl IntoView {
     let core = expect_context::<RwSignal<global_state::Machine>>();
     let core_exists = create_read_slice(core, |machine| machine.is_on());
 
-    let example = create_rw_signal(Example::Memcpy);
+    let example = create_rw_signal(Example::default());
 
     let code = create_rw_signal("".to_owned());
+
     let (instruction_map, set_instruction_map) = create_signal(vec![]);
 
     create_effect(move |_| {
-        let example = get_example(example()).to_owned();
-        code.set(example);
+        let example = example().asm();
+        code.set(example.to_owned());
     });
 
     view! {
@@ -31,8 +32,8 @@ pub fn ProgramView() -> impl IntoView {
             style="grid-area: pro"
             class="flex flex-col justify-center items-center content-center"
         >
-            <TopBar example={example}/>
-            <Editor code=code/>
+            <TopBar selected_example=example/>
+            <Editor code=code />
             <div class="flex w-full p-4 justify-between bg-zinc-800">
                 <ResetButton/>
 
@@ -40,7 +41,7 @@ pub fn ProgramView() -> impl IntoView {
                     if core_exists() {
                         view! { <StepButton instruction_map=instruction_map/> }
                     } else {
-                        view! { 
+                        view! {
                             <StartButton
                                 code=code.read_only()
                                 set_instruction_map=set_instruction_map
@@ -135,7 +136,7 @@ fn StepButton(instruction_map: ReadSignal<Vec<usize>>) -> impl IntoView {
     let errors = expect_context::<RwSignal<global_state::Errors>>();
     let (last_executed_line, set_last_executed_line) = create_signal(0);
 
-    let machine_step = create_write_slice( core, move |machine, _: ()| {
+    let machine_step = create_write_slice(core, move |machine, _: ()| {
         let option = machine.rw_core().unwrap().step();
 
         let mut did_finish = false;
@@ -183,26 +184,5 @@ fn StepButton(instruction_map: ReadSignal<Vec<usize>>) -> impl IntoView {
         >
             Step
         </button>
-    }
-}
-
-#[derive(Clone, Copy, PartialEq)]
-pub enum Example {
-    Memcpy,
-    Strcpy,
-    Strncpy,
-    Strlen,
-    Saxpy,
-}
-
-impl ToString for Example {
-    fn to_string(&self) -> String {
-        match self {
-            Self::Memcpy => "memcpy".to_owned(),
-            Self::Strcpy => "strcpy".to_owned(),
-            Self::Strncpy => "strncpy".to_owned(),
-            Self::Strlen => "strlen".to_owned(),
-            Self::Saxpy => "saxpy".to_owned(),
-        }
     }
 }
