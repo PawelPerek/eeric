@@ -1,3 +1,12 @@
+.text
+main:
+    li a0, 0x10       # Destination address
+    la a1, to_copy    # Source address
+    li a0, 9          # At most
+
+    call strlen
+    j finish
+
 strncpy:
     mv a3, a0             # Copy dst
 loop:
@@ -30,3 +39,7 @@ zero_loop:
     bnez a2, zero_loop    # Anymore?
 
     ret
+
+.data
+to_copy:
+    .asciz "Hello, world!"

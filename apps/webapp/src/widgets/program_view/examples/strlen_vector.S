@@ -1,3 +1,10 @@
+.text
+main:
+    la a0, to_copy       # Source address
+
+    call strlen
+    j finish
+
 strlen:
     mv a3, a0             # Save start
 loop:
@@ -14,3 +21,7 @@ loop:
     sub a0, a3, a0        # Subtract start address+bump
 
     ret
+
+.data
+to_copy:
+    .asciz "Hello, world!"

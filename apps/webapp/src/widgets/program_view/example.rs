@@ -42,11 +42,11 @@ impl Example {
                 variant: Variant::Vector,
             },
             Self {
-                algo: Algorithm::Saxpy,
+                algo: Algorithm::Daxpy,
                 variant: Variant::Scalar,
             },
             Self {
-                algo: Algorithm::Saxpy,
+                algo: Algorithm::Daxpy,
                 variant: Variant::Vector,
             },
         ]
@@ -60,14 +60,14 @@ impl Example {
         match (self.algo, self.variant) {
             (Algorithm::Memcpy, Variant::Scalar) => include_str!("examples/memcpy_scalar.S"),
             (Algorithm::Memcpy, Variant::Vector) => include_str!("examples/memcpy_vector.S"),
-            (Algorithm::Strcpy, Variant::Scalar) => include_str!("examples/strncpy.S"),
-            (Algorithm::Strcpy, Variant::Vector) => include_str!("examples/strlen.S"),
-            (Algorithm::Strncpy, Variant::Scalar) => include_str!("examples/saxpy.S"),
-            (Algorithm::Strncpy, Variant::Vector) => todo!(),
-            (Algorithm::Strlen, Variant::Scalar) => todo!(),
-            (Algorithm::Strlen, Variant::Vector) => todo!(),
-            (Algorithm::Saxpy, Variant::Scalar) => todo!(),
-            (Algorithm::Saxpy, Variant::Vector) => todo!(),
+            (Algorithm::Strcpy, Variant::Scalar) => include_str!("examples/strcpy_scalar.S"),
+            (Algorithm::Strcpy, Variant::Vector) => include_str!("examples/strcpy_vector.S"),
+            (Algorithm::Strncpy, Variant::Scalar) => include_str!("examples/strncpy_scalar.S"),
+            (Algorithm::Strncpy, Variant::Vector) => include_str!("examples/strncpy_vector.S"),
+            (Algorithm::Strlen, Variant::Scalar) => include_str!("examples/strlen_scalar.S"),
+            (Algorithm::Strlen, Variant::Vector) => include_str!("examples/strlen_vector.S"),
+            (Algorithm::Daxpy, Variant::Scalar) => include_str!("examples/daxpy_scalar.S"),
+            (Algorithm::Daxpy, Variant::Vector) => include_str!("examples/daxpy_vector.S"),
         }
     }
 }
@@ -93,7 +93,7 @@ pub enum Algorithm {
     Strcpy,
     Strncpy,
     Strlen,
-    Saxpy,
+    Daxpy,
 }
 
 impl fmt::Display for Algorithm {
@@ -103,7 +103,7 @@ impl fmt::Display for Algorithm {
             Self::Strcpy => "strcpy",
             Self::Strncpy => "strncpy",
             Self::Strlen => "strlen",
-            Self::Saxpy => "saxpy",
+            Self::Daxpy => "daxpy",
         };
 
         write!(f, "{}", algo_name)

@@ -1,3 +1,11 @@
+.text
+main:
+    li a0, 0x10
+    la a1, to_copy
+
+    call strcpy
+    j finish
+
 strcpy:
     mv a2, a0             # Copy dst
     li t0, -1             # Infinite AVL
@@ -14,3 +22,9 @@ loop:
     bltz a3, loop         # Zero byte not found, so loop
 
     ret
+
+finish:
+
+.data
+to_copy:
+    .asciz "Hello, world!"
