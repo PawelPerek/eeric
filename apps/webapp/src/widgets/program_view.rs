@@ -6,7 +6,7 @@ use editor::Editor;
 use eeric_core::prelude::*;
 use eeric_interpreter::prelude::*;
 use example::Example;
-use leptos::{leptos_dom::logging::console_log, *};
+use leptos::*;
 use top_bar::TopBar;
 
 use crate::widgets::global_state;

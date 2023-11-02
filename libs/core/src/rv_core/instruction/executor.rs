@@ -185,7 +185,10 @@ impl<'c> Executor<'c> {
                     .map(|instruction| self.execute(instruction.clone()))
                     .collect::<Result<Vec<()>, _>>()?;
 
-                self.registers.pc = self.registers.pc.wrapping_sub(instructions.len() as u64 * 4);
+                self.registers.pc = self
+                    .registers
+                    .pc
+                    .wrapping_sub(instructions.len() as u64 * 4);
             }
 
             _ => self.vector_execute(input)?,

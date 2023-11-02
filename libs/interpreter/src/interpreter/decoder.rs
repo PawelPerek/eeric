@@ -2307,7 +2307,7 @@ impl Decoder {
                 Addi(I {
                     rd,
                     rs1: 0,
-                    imm12: mem_addr
+                    imm12: mem_addr,
                 })
             }
             "nop" => Addi(I {

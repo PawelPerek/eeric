@@ -1,5 +1,5 @@
 use js_sys::Array;
-use leptos::{leptos_dom::logging::console_log, *};
+use leptos::*;
 use wasm_bindgen::{prelude::*, JsValue};
 use web_sys::HtmlDivElement;
 

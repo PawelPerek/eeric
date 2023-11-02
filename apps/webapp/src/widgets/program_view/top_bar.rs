@@ -57,7 +57,7 @@ pub fn TopBar(selected_example: RwSignal<Example>) -> impl IntoView {
                 >
                     <div class="py-1" role="none">
                         <For
-                            each=move || Example::all_combinations()
+                            each=Example::all_combinations
                             key=|example| example.name()
                             children =move |example: Example| {
                                 view! { <ExampleSelector example=example set_example=selected_example.write_only() /> }
