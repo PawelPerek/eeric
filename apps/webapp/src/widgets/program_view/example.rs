@@ -58,8 +58,8 @@ impl Example {
 
     pub fn asm(&self) -> &'static str {
         match (self.algo, self.variant) {
-            (Algorithm::Memcpy, Variant::Scalar) => include_str!("examples/memcpy.S"),
-            (Algorithm::Memcpy, Variant::Vector) => include_str!("examples/strcpy.S"),
+            (Algorithm::Memcpy, Variant::Scalar) => include_str!("examples/memcpy_scalar.S"),
+            (Algorithm::Memcpy, Variant::Vector) => include_str!("examples/memcpy_vector.S"),
             (Algorithm::Strcpy, Variant::Scalar) => include_str!("examples/strncpy.S"),
             (Algorithm::Strcpy, Variant::Vector) => include_str!("examples/strlen.S"),
             (Algorithm::Strncpy, Variant::Scalar) => include_str!("examples/saxpy.S"),

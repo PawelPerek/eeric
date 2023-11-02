@@ -196,4 +196,125 @@ mod tests {
             vec![37, 6, 73, 64, 97, 98, 99, 100, 101, 102, 0, 0]
         );
     }
+
+    #[test]
+    fn memcpy_scalar() {
+        let input = r#"
+        .text
+        main:
+            li a0, 0x10       # Destination address
+            la a1, to_copy    # Source address
+            li a2, 10         # Number of bytes to copy
+
+            call memcpy
+            j finish
+
+        memcpy:
+            mv a3, a0         # Copy destination address to a3
+        loop:
+            lb t0, 0(a1)      # Load byte from source address
+            sb t0, 0(a3)      # Store byte to destination address
+            addi a1, a1, 1    # Increment source address
+            addi a3, a3, 1    # Increment destination address
+            addi a2, a2, -1   # Decrement byte count
+            bnez a2, loop     # Repeat if there are more bytes to copy
+            ret               # Return
+
+        finish:
+
+        .data
+        to_copy:
+            .asciz "Hello, world!"
+        "#
+        .trim_start();
+
+        let compilation_result = Interpreter::compile(input.to_owned(), 14).unwrap();
+
+        assert_eq!(
+            compilation_result.instructions,
+            [
+                Instruction::Addi(format::I {
+                    rd: 10,
+                    rs1: 0,
+                    imm12: 16
+                }),
+                fuse![
+                    Instruction::Auipc(format::U { rd: 11, imm20: 0 }),
+                    Instruction::Addi(format::I {
+                        rd: 11,
+                        rs1: 11,
+                        imm12: 0
+                    })
+                ],
+                Instruction::Addi(format::I {
+                    rd: 12,
+                    rs1: 0,
+                    imm12: 10
+                }),
+                fuse![
+                    Instruction::Auipc(format::U { rd: 1, imm20: 0 }),
+                    Instruction::Jalr(format::I {
+                        rd: 1,
+                        rs1: 1,
+                        imm12: 8
+                    })
+                ],
+                Instruction::Jal(format::U { rd: 0, imm20: 36 }),
+                Instruction::Addi(format::I {
+                    rd: 13,
+                    rs1: 10,
+                    imm12: 0
+                }),
+                Instruction::Lb(format::I {
+                    rd: 5,
+                    rs1: 11,
+                    imm12: 0
+                }),
+                Instruction::Sb(format::S {
+                    rs1: 13,
+                    rs2: 5,
+                    imm12: 0
+                }),
+                Instruction::Addi(format::I {
+                    rd: 11,
+                    rs1: 11,
+                    imm12: 1
+                }),
+                Instruction::Addi(format::I {
+                    rd: 13,
+                    rs1: 13,
+                    imm12: 1
+                }),
+                Instruction::Addi(format::I {
+                    rd: 12,
+                    rs1: 12,
+                    imm12: -1
+                }),
+                Instruction::Bne(format::S {
+                    rs1: 12,
+                    rs2: 0,
+                    imm12: -20
+                }),
+                Instruction::Jalr(format::I {
+                    rd: 0,
+                    rs1: 1,
+                    imm12: 0
+                })
+            ]
+        );
+
+        assert_eq!(
+            compilation_result.instructions_addresses,
+            vec![2, 3, 4, 6, 7, 10, 12, 13, 14, 15, 16, 17, 18]
+        );
+
+        assert_eq!(
+            compilation_result
+                .memory
+                .snapshot()
+                .into_iter()
+                .collect::<Vec<_>>(),
+            vec![72, 101, 108, 108, 111, 44, 32, 119, 111, 114, 108, 100, 33, 0]
+        );
+    }
 }

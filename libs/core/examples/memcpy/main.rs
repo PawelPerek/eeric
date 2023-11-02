@@ -1,4 +1,5 @@
 use eeric_core::prelude::*;
+use eeric_core::vtype;
 
 use format as F;
 use Instruction as I;
@@ -26,7 +27,7 @@ fn main() {
             I::Vsetvli(F::Vsetvli {
                 rd: T0,
                 rs1: A2,
-                vtypei: 0b_1_1_000_011,
+                vtypei: vtype!(e8, m8, ta, ma),
             }),
             I::Vlv {
                 eew: BaseSew::E8,
