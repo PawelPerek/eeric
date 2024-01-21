@@ -172,10 +172,14 @@ mod tests {
                     imm12: 7
                 }),
                 fuse![
-                    Instruction::Auipc(format::U { rd: 11, imm20: 0 }),
+                    Instruction::Addi(format::I {
+                        rd: 0,
+                        rs1: 0,
+                        imm12: 0
+                    }),
                     Instruction::Addi(format::I {
                         rd: 11,
-                        rs1: 11,
+                        rs1: 0,
                         imm12: 4
                     })
                 ]
@@ -239,10 +243,14 @@ mod tests {
                     imm12: 16
                 }),
                 fuse![
-                    Instruction::Auipc(format::U { rd: 11, imm20: 0 }),
+                    Instruction::Addi(format::I {
+                        rd: 0,
+                        rs1: 0,
+                        imm12: 0,
+                    }),
                     Instruction::Addi(format::I {
                         rd: 11,
-                        rs1: 11,
+                        rs1: 0,
                         imm12: 0
                     })
                 ],

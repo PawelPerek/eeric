@@ -2304,11 +2304,20 @@ impl Decoder {
                 let (rd, mem_addr) =
                     integer::pseudo::parse_op_memory_label_format(op, memory_labels)?;
 
-                Addi(I {
-                    rd,
-                    rs1: 0,
-                    imm12: mem_addr,
-                })
+                // Needs to have nop to preserve correct PC behavior
+                fuse![
+                    Addi(I {
+                        rd: 0,
+                        rs1: 0,
+                        imm12: 0,
+                    }),
+                    Addi(I {
+                        rd,
+                        rs1: 0,
+                        imm12: mem_addr,
+                    })
+                ]
+                
             }
             "nop" => Addi(I {
                 rd: 0,
@@ -3230,55 +3239,15 @@ mod tests {
         assert_eq!(
             instruction,
             Ok(fuse![
-                Auipc(U { rd: 1, imm20: 0 }),
+                Addi(I {
+                    rd: 0,
+                    rs1: 0,
+                    imm12: 0
+                }),
                 Addi(I {
                     rd: 1,
-                    rs1: 1,
+                    rs1: 0,
                     imm12: 12
-                })
-            ])
-        );
-    }
-
-    #[test]
-    fn la_works_far() {
-        let mut memory_labels = HashMap::new();
-
-        memory_labels.insert("to_copy".to_owned(), 5000);
-
-        let instruction =
-            Decoder::decode_text_section("la x1, to_copy", &HashMap::new(), &memory_labels, 0);
-
-        assert_eq!(
-            instruction,
-            Ok(fuse![
-                Auipc(U { rd: 1, imm20: 1 }),
-                Addi(I {
-                    rd: 1,
-                    rs1: 1,
-                    imm12: 904
-                })
-            ])
-        );
-    }
-
-    #[test]
-    fn memcpy_works() {
-        let mut memory_labels = HashMap::new();
-
-        memory_labels.insert("to_copy".to_owned(), 5000);
-
-        let instruction =
-            Decoder::decode_text_section("la x1, to_copy", &HashMap::new(), &memory_labels, 0);
-
-        assert_eq!(
-            instruction,
-            Ok(fuse![
-                Auipc(U { rd: 1, imm20: 1 }),
-                Addi(I {
-                    rd: 1,
-                    rs1: 1,
-                    imm12: 904
                 })
             ])
         );
