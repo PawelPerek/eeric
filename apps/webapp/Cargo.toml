@@ -8,7 +8,7 @@ repository = { workspace = true }
 
 [dependencies]
 eeric-core = { path = "../../libs/core" }
-eeric-interpreter = { path = "../../libs/interpreter"}
-leptos = { version = "0.5.2", features = ["csr", "nightly"] }
-wasm-bindgen = "0.2.87"
-js-sys = "0.3.64"
+eeric-interpreter = { path = "../../libs/interpreter" }
+leptos = { version = "0.7.7", features = ["csr", "nightly"] }
+wasm-bindgen = "0.2.100"
+js-sys = "0.3.77"
