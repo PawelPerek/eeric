@@ -2796,173 +2796,173 @@ impl Decoder {
             },
 
             "vneg.v" => {
-                let (vd, vs2, vm) = vector::pseudo::parse_op_op_mask_format(op)?;
+                let (dest, vs2, vm) = vector::pseudo::parse_op_op_mask_format(op)?;
                 Vrsubvx(Opivx {
-                    vd,
+                    dest,
                     rs1: alias::ZERO,
                     vs2,
                     vm,
                 })
             }
             "vwcvt.x.x.v" => {
-                let (vd, vs2, vm) = vector::pseudo::parse_op_op_mask_format(op)?;
+                let (dest, vs2, vm) = vector::pseudo::parse_op_op_mask_format(op)?;
                 Vwaddvx(Opmvx {
-                    dest: vd,
+                    dest,
                     rs1: alias::ZERO,
                     vs2,
                     vm,
                 })
             }
             "vwcvtu.x.x.v" => {
-                let (vd, vs2, vm) = vector::pseudo::parse_op_op_mask_format(op)?;
+                let (dest, vs2, vm) = vector::pseudo::parse_op_op_mask_format(op)?;
                 Vwadduvx(Opmvx {
-                    dest: vd,
+                    dest,
                     rs1: alias::ZERO,
                     vs2,
                     vm,
                 })
             }
             "vnot.v" => {
-                let (vd, vs2, vm) = vector::pseudo::parse_op_op_mask_format(op)?;
+                let (dest, vs2, vm) = vector::pseudo::parse_op_op_mask_format(op)?;
                 Vxorvi(Opivi {
-                    vd,
+                    dest,
                     imm5: -1,
                     vs2,
                     vm,
                 })
             }
             "vncvt.x.x.w" => {
-                let (vd, vs2, vm) = vector::pseudo::parse_op_op_mask_format(op)?;
+                let (dest, vs2, vm) = vector::pseudo::parse_op_op_mask_format(op)?;
                 Vnsrlwx(Opivx {
-                    vd,
+                    dest,
                     rs1: alias::ZERO,
                     vs2,
                     vm,
                 })
             }
             "vmsgt.vv" => {
-                let (vd, vs2, vs1, vm) = vector::pseudo::parse_op_op_op_mask_format(op)?;
+                let (dest, vs2, vs1, vm) = vector::pseudo::parse_op_op_op_mask_format(op)?;
                 Vmsltvv(Opivv {
-                    vd,
+                    dest,
                     vs1: vs2,
                     vs2: vs1,
                     vm,
                 })
             }
             "vmsgtu.vv" => {
-                let (vd, vs2, vs1, vm) = vector::pseudo::parse_op_op_op_mask_format(op)?;
+                let (dest, vs2, vs1, vm) = vector::pseudo::parse_op_op_op_mask_format(op)?;
                 Vmsltuvv(Opivv {
-                    vd,
+                    dest,
                     vs1: vs2,
                     vs2: vs1,
                     vm,
                 })
             }
             "vmsge.vv" => {
-                let (vd, vs2, vs1, vm) = vector::pseudo::parse_op_op_op_mask_format(op)?;
+                let (dest, vs2, vs1, vm) = vector::pseudo::parse_op_op_op_mask_format(op)?;
                 Vmslevv(Opivv {
-                    vd,
+                    dest,
                     vs1: vs2,
                     vs2: vs1,
                     vm,
                 })
             }
             "vmsgeu.vv" => {
-                let (vd, vs2, vs1, vm) = vector::pseudo::parse_op_op_op_mask_format(op)?;
+                let (dest, vs2, vs1, vm) = vector::pseudo::parse_op_op_op_mask_format(op)?;
                 Vmsleuvv(Opivv {
-                    vd,
+                    dest,
                     vs1: vs2,
                     vs2: vs1,
                     vm,
                 })
             }
             "vmslt.vi" => {
-                let (vd, vs2, imm, vm) = vector::pseudo::parse_op_op_imm_mask_format(op)?;
+                let (dest, vs2, imm, vm) = vector::pseudo::parse_op_op_imm_mask_format(op)?;
                 Vmslevi(Opivi {
-                    vd,
+                    dest,
                     imm5: imm - 1,
                     vs2,
                     vm,
                 })
             }
             "vmsltu.vi" => {
-                let (vd, vs2, imm, vm) = vector::pseudo::parse_op_op_imm_mask_format(op)?;
+                let (dest, vs2, imm, vm) = vector::pseudo::parse_op_op_imm_mask_format(op)?;
                 Vmsleuvi(Opivi {
-                    vd,
+                    dest,
                     imm5: imm - 1,
                     vs2,
                     vm,
                 })
             }
             "vmsge.vi" => {
-                let (vd, vs2, imm, vm) = vector::pseudo::parse_op_op_imm_mask_format(op)?;
+                let (dest, vs2, imm, vm) = vector::pseudo::parse_op_op_imm_mask_format(op)?;
                 Vmsgtvi(Opivi {
-                    vd,
+                    dest,
                     imm5: imm - 1,
                     vs2,
                     vm,
                 })
             }
             "vmsgeu.vi" => {
-                let (vd, vs2, imm, vm) = vector::pseudo::parse_op_op_imm_mask_format(op)?;
+                let (dest, vs2, imm, vm) = vector::pseudo::parse_op_op_imm_mask_format(op)?;
                 Vmsgtuvi(Opivi {
-                    vd,
+                    dest,
                     imm5: imm - 1,
                     vs2,
                     vm,
                 })
             }
             "vmsge.vx" => match vector::pseudo::parse_op_op_xreg_format(op) {
-                Ok((vd, vs2, rs1)) => fuse![
+                Ok((dest, vs2, rs1)) => fuse![
                     Vmsltvx(Opivx {
-                        vd,
+                        dest,
                         rs1,
                         vs2,
                         vm: false,
                     }),
                     Vmnandmm(Opmvv {
-                        dest: vd,
-                        vs1: vd,
-                        vs2: vd,
+                        dest: dest,
+                        vs1: dest,
+                        vs2: dest,
                         vm: false,
                     }),
                 ],
                 Err(fst_err) => match vector::pseudo::parse_op_op_xreg_mask_vd_nonzero_format(op) {
-                    Ok((vd, vs2, rs1)) => fuse![
+                    Ok((dest, vs2, rs1)) => fuse![
                         Vmsltvx(Opivx {
-                            vd,
+                            dest,
                             rs1,
                             vs2,
                             vm: true,
                         }),
                         Vmxormm(Opmvv {
-                            dest: vd,
+                            dest: dest,
                             vs1: 0,
-                            vs2: vd,
+                            vs2: dest,
                             vm: false,
                         }),
                     ],
                     Err(snd_err) => match vector::pseudo::parse_op_op_xreg_mask_temp_format(op) {
-                        Ok((vd, vs2, rs1, vt)) => {
-                            if vd == 0 {
+                        Ok((dest, vs2, rs1, vt)) => {
+                            if dest == 0 {
                                 fuse![
                                     Vmsltvx(Opivx {
-                                        vd: vt,
+                                        dest: vt,
                                         rs1,
                                         vs2,
                                         vm: false,
                                     }),
                                     Vmandnmm(Opmvv {
-                                        dest: vd,
+                                        dest: dest,
                                         vs1: vt,
-                                        vs2: vd,
+                                        vs2: dest,
                                         vm: false,
                                     }),
                                 ]
                             } else {
                                 fuse![
                                     Vmsltvx(Opivx {
-                                        vd: vt,
+                                        dest: vt,
                                         rs1,
                                         vs2,
                                         vm: false,
@@ -2974,14 +2974,14 @@ impl Decoder {
                                         vm: false,
                                     }),
                                     Vmandnmm(Opmvv {
-                                        dest: vd,
+                                        dest: dest,
                                         vs1: 0,
-                                        vs2: vd,
+                                        vs2: dest,
                                         vm: false,
                                     }),
                                     Vmormm(Opmvv {
-                                        dest: vd,
-                                        vs1: vd,
+                                        dest: dest,
+                                        vs1: dest,
                                         vs2: vt,
                                         vm: false,
                                     }),
@@ -2995,56 +2995,56 @@ impl Decoder {
                 },
             },
             "vmsgeu.vx" => match vector::pseudo::parse_op_op_xreg_format(op) {
-                Ok((vd, vs2, rs1)) => fuse![
+                Ok((dest, vs2, rs1)) => fuse![
                     Vmsltuvx(Opivx {
-                        vd,
+                        dest,
                         rs1,
                         vs2,
                         vm: false,
                     }),
                     Vmnandmm(Opmvv {
-                        dest: vd,
-                        vs1: vd,
-                        vs2: vd,
+                        dest: dest,
+                        vs1: dest,
+                        vs2: dest,
                         vm: false,
                     })
                 ],
                 Err(fst_err) => match vector::pseudo::parse_op_op_xreg_mask_vd_nonzero_format(op) {
-                    Ok((vd, vs2, rs1)) => fuse![
+                    Ok((dest, vs2, rs1)) => fuse![
                         Vmsltuvx(Opivx {
-                            vd,
+                            dest,
                             rs1,
                             vs2,
                             vm: true,
                         }),
                         Vmxormm(Opmvv {
-                            dest: vd,
+                            dest: dest,
                             vs1: 0,
-                            vs2: vd,
+                            vs2: dest,
                             vm: false,
                         })
                     ],
                     Err(snd_err) => match vector::pseudo::parse_op_op_xreg_mask_temp_format(op) {
-                        Ok((vd, vs2, rs1, vt)) => {
-                            if vd == 0 {
+                        Ok((dest, vs2, rs1, vt)) => {
+                            if dest == 0 {
                                 fuse![
                                     Vmsltuvx(Opivx {
-                                        vd: vt,
+                                        dest: vt,
                                         rs1,
                                         vs2,
                                         vm: false,
                                     }),
                                     Vmandnmm(Opmvv {
-                                        dest: vd,
+                                        dest: dest,
                                         vs1: vt,
-                                        vs2: vd,
+                                        vs2: dest,
                                         vm: false,
                                     }),
                                 ]
                             } else {
                                 fuse![
                                     Vmsltuvx(Opivx {
-                                        vd: vt,
+                                        dest: vt,
                                         rs1,
                                         vs2,
                                         vm: false,
@@ -3056,14 +3056,14 @@ impl Decoder {
                                         vm: false,
                                     }),
                                     Vmandnmm(Opmvv {
-                                        dest: vd,
+                                        dest: dest,
                                         vs1: 0,
-                                        vs2: vd,
+                                        vs2: dest,
                                         vm: false,
                                     }),
                                     Vmormm(Opmvv {
-                                        dest: vd,
-                                        vs1: vd,
+                                        dest: dest,
+                                        vs1: dest,
                                         vs2: vt,
                                         vm: false,
                                     })
@@ -3077,72 +3077,72 @@ impl Decoder {
                 },
             },
             "vfneg.v" => {
-                let (vd, vs2, vm) = vector::pseudo::parse_op_op_mask_format(op)?;
+                let (dest, vs2, vm) = vector::pseudo::parse_op_op_mask_format(op)?;
                 Vfsgnjnvv(Opfvv {
-                    dest: vd,
+                    dest: dest,
                     vs1: vs2,
                     vs2,
                     vm,
                 })
             }
             "vfabs.v" => {
-                let (vd, vs2, vm) = vector::pseudo::parse_op_op_mask_format(op)?;
+                let (dest, vs2, vm) = vector::pseudo::parse_op_op_mask_format(op)?;
                 Vfsgnjxvv(Opfvv {
-                    dest: vd,
+                    dest: dest,
                     vs1: vs2,
                     vs2,
                     vm,
                 })
             }
             "vmfgt.vv" => {
-                let (vd, vs2, vs1, vm) = vector::pseudo::parse_op_op_op_mask_format(op)?;
+                let (dest, vs2, vs1, vm) = vector::pseudo::parse_op_op_op_mask_format(op)?;
                 Vmfltvv(Opfvv {
-                    dest: vd,
+                    dest: dest,
                     vs1: vs2,
                     vs2: vs1,
                     vm,
                 })
             }
             "vmfge.vv" => {
-                let (vd, vs2, vs1, vm) = vector::pseudo::parse_op_op_op_mask_format(op)?;
+                let (dest, vs2, vs1, vm) = vector::pseudo::parse_op_op_op_mask_format(op)?;
                 Vmflevv(Opfvv {
-                    dest: vd,
+                    dest: dest,
                     vs1: vs2,
                     vs2: vs1,
                     vm,
                 })
             }
             "vmmv.m" => {
-                let (vd, vs2) = vector::pseudo::parse_op_op_format(op)?;
+                let (dest, vs2) = vector::pseudo::parse_op_op_format(op)?;
                 Vmandmm(Opmvv {
-                    dest: vd,
+                    dest: dest,
                     vs1: vs2,
                     vs2,
                     vm: false,
                 })
             }
             "vmclr.m" => {
-                let vd = vector::pseudo::parse_op_format(op)?;
+                let dest = vector::pseudo::parse_op_format(op)?;
                 Vmxormm(Opmvv {
-                    dest: vd,
-                    vs1: vd,
-                    vs2: vd,
+                    dest: dest,
+                    vs1: dest,
+                    vs2: dest,
                     vm: false,
                 })
             }
             "vmset.m" => {
-                let vd = vector::pseudo::parse_op_format(op)?;
+                let dest = vector::pseudo::parse_op_format(op)?;
                 Vmxnormm(Opmvv {
-                    dest: vd,
-                    vs1: vd,
-                    vs2: vd,
+                    dest: dest,
+                    vs1: dest,
+                    vs2: dest,
                     vm: false,
                 })
             }
             "vmnot.m" => {
-                let (vd, vs2) = vector::pseudo::parse_op_op_format(op)?;
+                let (dest, vs2) = vector::pseudo::parse_op_op_format(op)?;
                 Vmnandmm(Opmvv {
-                    dest: vd,
+                    dest: dest,
                     vs1: vs2,
                     vs2,
                     vm: false,

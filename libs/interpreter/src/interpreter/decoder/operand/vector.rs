@@ -325,7 +325,7 @@ pub fn parse_opivv_format(opivv: &str) -> Result<format::Opivv, String> {
         ));
     }
 
-    let vd = parse_operand(tokens[0])?.as_register()?;
+    let dest = parse_operand(tokens[0])?.as_register()?;
     let vs2 = parse_operand(tokens[1])?.as_register()?;
     let vs1 = parse_operand(tokens[2])?.as_register()?;
     let vm = if tokens.len() == 4 {
@@ -335,7 +335,7 @@ pub fn parse_opivv_format(opivv: &str) -> Result<format::Opivv, String> {
         false
     };
 
-    Ok(format::Opivv { vd, vs2, vs1, vm })
+    Ok(format::Opivv { dest, vs2, vs1, vm })
 }
 
 pub fn parse_opivv_v0_format(opivv: &str) -> Result<format::Opivv, String> {
@@ -347,7 +347,7 @@ pub fn parse_opivv_v0_format(opivv: &str) -> Result<format::Opivv, String> {
         ));
     }
 
-    let vd = parse_operand(tokens[0])?.as_register()?;
+    let dest = parse_operand(tokens[0])?.as_register()?;
     let vs2 = parse_operand(tokens[1])?.as_register()?;
     let vs1 = parse_operand(tokens[2])?.as_register()?;
     if parse_operand(tokens[3])?.as_register()? != 0 {
@@ -355,7 +355,7 @@ pub fn parse_opivv_v0_format(opivv: &str) -> Result<format::Opivv, String> {
     }
 
     Ok(format::Opivv {
-        vd,
+        dest,
         vs2,
         vs1,
         vm: true,
@@ -371,12 +371,12 @@ pub fn parse_opivv_maskless_format(opivv: &str) -> Result<format::Opivv, String>
         ));
     }
 
-    let vd = parse_operand(tokens[0])?.as_register()?;
+    let dest = parse_operand(tokens[0])?.as_register()?;
     let vs2 = parse_operand(tokens[1])?.as_register()?;
     let vs1 = parse_operand(tokens[2])?.as_register()?;
 
     Ok(format::Opivv {
-        vd,
+        dest,
         vs2,
         vs1,
         vm: true,
@@ -392,11 +392,11 @@ pub fn parse_opivv_vmv_format(opivv_vmv: &str) -> Result<format::Opivv, String> 
         ));
     }
 
-    let vd = parse_operand(tokens[0])?.as_register()?;
+    let dest: usize = parse_operand(tokens[0])?.as_register()?;
     let vs1 = parse_operand(tokens[1])?.as_register()?;
 
     Ok(format::Opivv {
-        vd,
+        dest,
         vs2: 0,
         vs1,
         vm: false,
@@ -412,7 +412,7 @@ pub fn parse_opivx_format(opivx: &str) -> Result<format::Opivx, String> {
         ));
     }
 
-    let vd = parse_operand(tokens[0])?.as_register()?;
+    let dest = parse_operand(tokens[0])?.as_register()?;
     let vs2 = parse_operand(tokens[1])?.as_register()?;
     let rs1 = integer::parse_operand(tokens[2])?;
     let vm = if tokens.len() == 4 {
@@ -422,7 +422,7 @@ pub fn parse_opivx_format(opivx: &str) -> Result<format::Opivx, String> {
         false
     };
 
-    Ok(format::Opivx { vd, vs2, rs1, vm })
+    Ok(format::Opivx { dest, vs2, rs1, vm })
 }
 
 pub fn parse_opivx_v0_format(opivx: &str) -> Result<format::Opivx, String> {
@@ -434,7 +434,7 @@ pub fn parse_opivx_v0_format(opivx: &str) -> Result<format::Opivx, String> {
         ));
     }
 
-    let vd = parse_operand(tokens[0])?.as_register()?;
+    let dest = parse_operand(tokens[0])?.as_register()?;
     let vs2 = parse_operand(tokens[1])?.as_register()?;
     let rs1 = integer::parse_operand(tokens[2])?;
     if parse_operand(tokens[3])?.as_register()? != 0 {
@@ -442,7 +442,7 @@ pub fn parse_opivx_v0_format(opivx: &str) -> Result<format::Opivx, String> {
     }
 
     Ok(format::Opivx {
-        vd,
+        dest,
         vs2,
         rs1,
         vm: false,
@@ -458,12 +458,12 @@ pub fn parse_opivx_maskless_format(opivx: &str) -> Result<format::Opivx, String>
         ));
     }
 
-    let vd = parse_operand(tokens[0])?.as_register()?;
+    let dest = parse_operand(tokens[0])?.as_register()?;
     let vs2 = parse_operand(tokens[1])?.as_register()?;
     let rs1 = integer::parse_operand(tokens[2])?;
 
     Ok(format::Opivx {
-        vd,
+        dest,
         vs2,
         rs1,
         vm: false,
@@ -479,11 +479,11 @@ pub fn parse_opivx_vmv_format(opivx_vmv: &str) -> Result<format::Opivx, String> 
         ));
     }
 
-    let vd = parse_operand(tokens[0])?.as_register()?;
+    let dest = parse_operand(tokens[0])?.as_register()?;
     let rs1 = integer::parse_operand(tokens[1])?;
 
     Ok(format::Opivx {
-        vd,
+        dest,
         vs2: 0,
         rs1,
         vm: false,
@@ -499,7 +499,7 @@ pub fn parse_opivi_format(opivi: &str) -> Result<format::Opivi, String> {
         ));
     }
 
-    let vd = parse_operand(tokens[0])?.as_register()?;
+    let dest = parse_operand(tokens[0])?.as_register()?;
     let vs2 = parse_operand(tokens[1])?.as_register()?;
     let imm = integer::parse_immediate(tokens[2])?;
     let vm = if tokens.len() == 4 {
@@ -510,7 +510,7 @@ pub fn parse_opivi_format(opivi: &str) -> Result<format::Opivi, String> {
     };
 
     Ok(format::Opivi {
-        vd,
+        dest,
         vs2,
         imm5: imm,
         vm,
@@ -526,7 +526,7 @@ pub fn parse_opivi_v0_format(opivi: &str) -> Result<format::Opivi, String> {
         ));
     }
 
-    let vd = parse_operand(tokens[0])?.as_register()?;
+    let dest = parse_operand(tokens[0])?.as_register()?;
     let vs2 = parse_operand(tokens[1])?.as_register()?;
     let imm = integer::parse_immediate(tokens[2])?;
     if parse_operand(tokens[3])?.as_register()? != 0 {
@@ -534,7 +534,7 @@ pub fn parse_opivi_v0_format(opivi: &str) -> Result<format::Opivi, String> {
     }
 
     Ok(format::Opivi {
-        vd,
+        dest,
         vs2,
         imm5: imm,
         vm: false,
@@ -550,12 +550,12 @@ pub fn parse_opivi_maskless_format(opivi: &str) -> Result<format::Opivi, String>
         ));
     }
 
-    let vd = parse_operand(tokens[0])?.as_register()?;
+    let dest = parse_operand(tokens[0])?.as_register()?;
     let vs2 = parse_operand(tokens[1])?.as_register()?;
     let imm = integer::parse_immediate(tokens[2])?;
 
     Ok(format::Opivi {
-        vd,
+        dest,
         vs2,
         imm5: imm,
         vm: false,
@@ -571,11 +571,11 @@ pub fn parse_opivi_vmv_format(opivi_vmv: &str) -> Result<format::Opivi, String> 
         ));
     }
 
-    let vd = parse_operand(tokens[0])?.as_register()?;
+    let dest = parse_operand(tokens[0])?.as_register()?;
     let imm = integer::parse_immediate(tokens[1])?;
 
     Ok(format::Opivi {
-        vd,
+        dest,
         vs2: 0,
         imm5: imm,
         vm: false,
