@@ -99,7 +99,7 @@ pub struct Vsr {
 // Vector - Vector
 #[derive(Clone, PartialEq, Debug)]
 pub struct Opivv {
-    pub vd: usize,
+    pub dest: usize,
     pub vs1: usize,
     pub vs2: usize,
     pub vm: bool,
@@ -110,7 +110,7 @@ pub struct Opivv {
 #[derive(Clone, PartialEq, Debug)]
 
 pub struct Opivx {
-    pub vd: usize,
+    pub dest: usize,
     pub rs1: usize,
     pub vs2: usize,
     pub vm: bool,
@@ -119,7 +119,7 @@ pub struct Opivx {
 // Vector - Immediate
 #[derive(Clone, PartialEq, Debug)]
 pub struct Opivi {
-    pub vd: usize,
+    pub dest: usize,
     pub imm5: i32,
     pub vs2: usize,
     pub vm: bool,

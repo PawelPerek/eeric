@@ -9,9 +9,12 @@ pub fn v(
 ) {
     let base_addr = x[rs1] as usize;
 
+    let vs3 = v.get(vs3);
+    let vs2 = v.get(vs2);
+
     izip!(
-        v.get(vs3).iter_eew(),
-        v.get(vs2).iter_custom_eew(eew),
+        vs3.iter_eew(),
+        vs2.iter_custom_eew(eew),
         v.default_mask(vm)
     )
     .for_each(|(data, offset, mask)| {

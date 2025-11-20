@@ -2,7 +2,7 @@ use crate::rv_core::instruction::executor::prelude::*;
 
 pub fn vv(
     Opivv {
-        vd,
+        dest,
         vs1,
         vs2: _,
         vm: _,
@@ -11,12 +11,12 @@ pub fn vv(
 ) {
     let vreg = v.get(vs1);
 
-    v.apply(vd, vreg);
+    v.apply(dest, vreg);
 }
 
 pub fn vx(
     Opivx {
-        vd,
+        dest,
         rs1,
         vs2: _,
         vm: _,
@@ -25,17 +25,17 @@ pub fn vx(
     x: &IntegerRegisters,
 ) {
     let vreg = v
-        .get(vd)
+        .get(dest)
         .iter_eew()
         .map(|_| x[rs1])
         .collect_with_eew(v.vec_engine.sew);
 
-    v.apply(vd, vreg);
+    v.apply(dest, vreg);
 }
 
 pub fn vi(
     Opivi {
-        vd,
+        dest,
         imm5,
         vs2: _,
         vm: _,
@@ -43,12 +43,12 @@ pub fn vi(
     v: &mut VectorContext<'_>,
 ) {
     let vreg = v
-        .get(vd)
+        .get(dest)
         .iter_eew()
         .map(|_| imm5 as u64)
         .collect_with_eew(v.vec_engine.sew);
 
-    v.apply(vd, vreg);
+    v.apply(dest, vreg);
 }
 
 pub fn xs(
@@ -68,7 +68,7 @@ pub fn xs(
 
 pub fn sx(
     Vrxunary0 {
-        dest: vd,
+        dest,
         rs1,
         vm: _,
         ..
@@ -78,11 +78,11 @@ pub fn sx(
 ) {
     let first_value = u64::to_le_bytes(x[rs1]);
 
-    let vreg = v.get(vd);
+    let vreg = v.get(dest);
     let mut vreg_data = vreg.iter_byte().collect_vec();
 
     vreg_data[..v.vec_engine.sew.byte_length()]
         .copy_from_slice(&first_value[..v.vec_engine.sew.byte_length()]);
 
-    v.apply(vd, vreg_data.into_iter().collect());
+    v.apply(dest, vreg_data.into_iter().collect());
 }

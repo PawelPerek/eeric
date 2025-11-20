@@ -2,27 +2,30 @@ use crate::rv_core::instruction::executor::prelude::*;
 
 pub fn vvm(
     Opivv {
-        vd,
+        dest,
         vs1,
         vs2,
         vm: _,
     }: Opivv,
     v: &mut VectorContext<'_>,
 ) {
+    let vs2 = v.get(vs2);
+    let vs1 = v.get(vs1);
+
     let vreg = izip!(
         v.default_mask(true),
-        v.get(vs2).iter_eew(),
-        v.get(vs1).iter_eew(),
+        vs2.iter_eew(),
+        vs1.iter_eew(),
     )
     .map(|(mask, vs2, vs1)| if mask == 1 { vs1 } else { vs2 })
     .collect_with_eew(v.vec_engine.sew);
 
-    v.apply(vd, vreg);
+    v.apply(dest, vreg);
 }
 
 pub fn vxm(
     Opivx {
-        vd,
+        dest,
         rs1,
         vs2,
         vm: _,
@@ -34,12 +37,12 @@ pub fn vxm(
         .map(|(mask, vs2)| if mask == 1 { x[rs1] } else { vs2 })
         .collect_with_eew(v.vec_engine.sew);
 
-    v.apply(vd, vreg);
+    v.apply(dest, vreg);
 }
 
 pub fn vim(
     Opivi {
-        vd,
+        dest,
         imm5,
         vs2,
         vm: _,
@@ -50,5 +53,5 @@ pub fn vim(
         .map(|(mask, vs2)| if mask == 1 { imm5 as u64 } else { vs2 })
         .collect_with_eew(v.vec_engine.sew);
 
-    v.apply(vd, vreg);
+    v.apply(dest, vreg);
 }

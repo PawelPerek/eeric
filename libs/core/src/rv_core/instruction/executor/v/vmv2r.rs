@@ -2,7 +2,7 @@ use crate::rv_core::instruction::executor::prelude::*;
 
 pub fn v(
     Opivi {
-        vd,
+        dest,
         imm5: _,
         vs2,
         vm,
@@ -12,7 +12,7 @@ pub fn v(
     for i in 0..2 {
         super::vmv::vv(
             Opivv {
-                vd: vd + i,
+                dest: dest + i,
                 vs1: vs2 + i,
                 vs2: 0,
                 vm,

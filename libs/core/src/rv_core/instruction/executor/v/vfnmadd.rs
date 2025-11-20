@@ -2,26 +2,30 @@ use crate::rv_core::instruction::executor::prelude::*;
 
 pub fn vv(
     Opfvv {
-        dest: vd,
+        dest,
         vs1,
         vs2,
         vm,
     }: Opfvv,
     v: &mut VectorContext<'_>,
 ) -> Result<(), String> {
+    let vs2 = v.get(vs2);
+    let vs1 = v.get(vs1);
+    let vd  = v.get(dest);
+
     let vreg = izip!(
-        v.get(vs2).iter_fp()?,
-        v.get(vs1).iter_fp()?,
-        v.get(vd).iter_fp()?
+        vs2.iter_fp()?,
+        vs1.iter_fp()?,
+        vd.iter_fp()?
     )
     .masked_map(
         v.default_mask(vm),
-        v.get(vd).iter_fp()?,
+        vd.iter_fp()?,
         |(vs2, vs1, vd)| -(vd * vs1) - vs2,
     )
     .collect_fp();
 
-    v.apply(vd, vreg);
+    v.apply(dest, vreg);
 
     Ok(())
 }
