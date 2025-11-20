@@ -28,7 +28,7 @@ impl RvCore {
         self.run().next()
     }
 
-    pub fn run(&mut self) -> RunningRvCore {
+    pub fn run(&mut self) -> RunningRvCore<'_> {
         RunningRvCore { core: self }
     }
 }

@@ -10,8 +10,9 @@ fn binary_tree_sum(input: impl IntoIterator<Item = ArbitraryFloat>) -> Arbitrary
     }
 
     let result: Vec<ArbitraryFloat> = input_vec
+        .into_iter()
         .array_chunks::<2>()
-        .map(|&[f1, f2]| f1 + f2)
+        .map(|[f1, f2]| f1 + f2)
         .collect();
 
     binary_tree_sum(result)
